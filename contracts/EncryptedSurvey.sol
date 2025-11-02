@@ -223,5 +223,13 @@ contract EncryptedSurvey is SepoliaConfig {
             }
         }
     }
+
+    /// @notice Validates survey parameters before deployment.
+    function validateSurveyParams(string memory title, string[] memory surveyOptions) external pure returns (bool) {
+        require(bytes(title).length > 0, "TITLE_REQUIRED");
+        require(surveyOptions.length >= 2, "MINIMUM_TWO_OPTIONS");
+        require(surveyOptions.length <= 10, "MAXIMUM_TEN_OPTIONS");
+        return true;
+    }
 }
 
