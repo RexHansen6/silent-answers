@@ -1,5 +1,6 @@
 "use client";
 
+// Enhanced UI component for encrypted survey dashboard
 import { useMemo, useState } from "react";
 
 import { ConnectButton } from "@rainbow-me/rainbowkit";
