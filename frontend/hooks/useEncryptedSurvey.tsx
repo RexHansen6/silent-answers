@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 "use client";
 
+// Enhanced hook for encrypted survey interactions with FHEVM
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { ethers } from "ethers";
 import { useAccount, usePublicClient } from "wagmi";
