@@ -1,3 +1,4 @@
+// Updated by RexHansen6 on 2025-11-14 16:34:07
 "use client";
 
 // Enhanced UI component for encrypted survey dashboard
@@ -14,7 +15,7 @@ function truncate(value: string) {
   if (!value || value === "0x0000000000000000000000000000000000000000000000000000000000000000") {
     return "0x0";
   }
-  return `${value.slice(0, 8)}â€¦${value.slice(-4)}`;
+  return `${value.slice(0, 8)}â€?{value.slice(-4)}`;
 }
 
 export default function Home() {
@@ -92,7 +93,7 @@ export default function Home() {
                 }}
                 className="text-sm font-medium text-slate-300 transition hover:text-white"
               >
-                Refresh data â†»
+                Refresh data â†?
               </button>
             </div>
             <div className="flex flex-col gap-3">
@@ -190,7 +191,7 @@ export default function Home() {
                     : "cursor-not-allowed bg-white/10 text-slate-400",
                 )}
               >
-                {isSubmitting ? "Encrypting & submittingâ€¦" : hasResponded ? "Response captured" : "Submit encrypted vote"}
+                {isSubmitting ? "Encrypting & submittingâ€? : hasResponded ? "Response captured" : "Submit encrypted vote"}
               </button>
               <p className="text-xs text-slate-400">
                 Ciphertexts refresh automatically. Admins can decrypt final tallies with the button on the right.
@@ -231,7 +232,7 @@ export default function Home() {
                 <div className="flex justify-between">
                   <span className="text-slate-400">Survey progress</span>
                   <span className="font-medium text-white">
-                    {isFetching ? "Refreshingâ€¦" : `${encryptedTallies.length || cardOptions.length} options`}
+                    {isFetching ? "Refreshingâ€? : `${encryptedTallies.length || cardOptions.length} options`}
                   </span>
                 </div>
                 <div className="flex justify-between">
@@ -266,7 +267,7 @@ export default function Home() {
                       : "cursor-not-allowed bg-white/10 text-slate-400",
                   )}
                 >
-                  {isDecrypting ? "Decryptingâ€¦" : "Decrypt aggregated tallies"}
+                  {isDecrypting ? "Decryptingâ€? : "Decrypt aggregated tallies"}
                 </button>
                 {isAdmin ? (
                   <div className="mt-2 space-y-2">
@@ -297,7 +298,7 @@ export default function Home() {
                             : "cursor-not-allowed bg-white/10 text-slate-400",
                         )}
                       >
-                        {isAuthorizing ? "Authorizingâ€¦" : "Authorize"}
+                        {isAuthorizing ? "Authorizingâ€? : "Authorize"}
                       </button>
                     </div>
                   </div>
@@ -420,7 +421,7 @@ export default function Home() {
                             ? 0
                             : decrypted === null
                               ? "Locked"
-                              : "â€”"}
+                              : "â€?}
                       </td>
                     </tr>
                   );
