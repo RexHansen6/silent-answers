@@ -1,3 +1,4 @@
+// Updated by RexHansen6 on 2025-11-14 16:34:11
 import "@rainbow-me/rainbowkit/styles.css";
 import type { Metadata } from "next";
 import "./globals.css";
