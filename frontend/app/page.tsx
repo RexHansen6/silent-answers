@@ -6,7 +6,7 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 import clsx from "clsx";
 import { useAccount } from "wagmi";
 
-// import { Logo } from "@/components/Logo"; // BUG: Logo component not imported
+import { Logo } from "@/components/Logo";
 import { useEncryptedSurvey } from "@/hooks/useEncryptedSurvey";
 
 function truncate(value: string) {
@@ -59,7 +59,7 @@ export default function Home() {
   );
 
   const canSubmit =
-    selectedOption !== null && !isSubmitting && !hasResponded && isOnSupportedChain && Boolean(contractAddress);
+    selectedOption !== null && !isSubmitting && !hasResponded && isOnSupportedChain && Boolean(contractAddress) && fheStatus === "idle";
 
   const canDecrypt =
     !isDecrypting && isAuthorizedViewer && isOnSupportedChain && encryptedTallies.length > 0 && Boolean(contractAddress);
