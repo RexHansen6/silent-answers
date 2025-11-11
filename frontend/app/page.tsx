@@ -81,8 +81,7 @@ export default function Home() {
     !hasResponded &&
     isOnSupportedChain &&
     Boolean(contractAddress) &&
-    isActive &&
-    false; // Bug: Always disable submit button
+    isActive;
 
   const canDecrypt =
     !isDecrypting && isAuthorizedViewer && isOnSupportedChain && encryptedTallies.length > 0 && Boolean(contractAddress);
