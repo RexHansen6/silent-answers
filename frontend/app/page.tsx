@@ -83,9 +83,15 @@ export default function Home() {
                 onClick={() => {
                   void refreshSurvey();
                 }}
-                className="text-sm font-medium text-slate-300 transition hover:text-white"
+                disabled={isFetching}
+                className={clsx(
+                  "text-sm font-medium transition",
+                  isFetching
+                    ? "text-slate-500 cursor-not-allowed"
+                    : "text-slate-300 hover:text-white"
+                )}
               >
-                Refresh data ↻
+                {isFetching ? "Refreshing…" : "Refresh data ↻"}
               </button>
             </div>
             <div className="flex flex-col gap-3">
@@ -201,7 +207,12 @@ export default function Home() {
               <div className="mt-3 space-y-3 text-sm text-slate-200">
                 <div className="flex justify-between">
                   <span className="text-slate-400">FHE instance</span>
-                  <span className="font-medium text-white">{fheStatus}</span>
+                  <span className={clsx(
+                    "font-medium",
+                    fheStatus === "idle" ? "text-emerald-300" : "text-amber-300"
+                  )}>
+                    {fheStatus}
+                  </span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-slate-400">Survey contract</span>
