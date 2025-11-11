@@ -170,6 +170,11 @@ export default function Home() {
                       checked={isSelected}
                       disabled={disabled}
                       onChange={() => setSelectedOption(index)}
+                      onKeyDown={(event) => {
+                        if (event.key === 'Enter' || event.key === ' ') {
+                          setSelectedOption(index);
+                        }
+                      }}
                       className="h-5 w-5 cursor-pointer accent-indigo-400"
                     />
                   </label>
