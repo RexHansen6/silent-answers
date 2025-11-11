@@ -22,6 +22,7 @@ contract EncryptedSurvey is SepoliaConfig {
 
     address public immutable admin;
     ViewerRegistry private _viewerRegistry;
+    bool private _paused;
 
     event ResponseSubmitted(address indexed respondent, uint256 indexed optionIndex);
     event ViewerAuthorized(address indexed viewer);
@@ -35,6 +36,13 @@ contract EncryptedSurvey is SepoliaConfig {
     modifier onlyAdmin() {
         if (msg.sender != admin) {
             revert OnlyAdmin();
+        }
+        _;
+    }
+
+    modifier whenNotPaused() {
+        if (_paused) {
+            revert("Survey is paused");
         }
         _;
     }
@@ -106,7 +114,7 @@ contract EncryptedSurvey is SepoliaConfig {
     }
 
     /// @notice Submits an encrypted response for a specific survey option.
-    function submitResponse(uint256 optionIndex, externalEuint32 encryptedVote, bytes calldata proof) external {
+    function submitResponse(uint256 optionIndex, externalEuint32 encryptedVote, bytes calldata proof) external whenNotPaused {
         if (optionIndex >= _options.length) {
             revert InvalidOption();
         }
@@ -128,6 +136,21 @@ contract EncryptedSurvey is SepoliaConfig {
     /// @notice Grants permission for a viewer to decrypt the current tallies.
     function authorizeViewer(address viewer) external onlyAdmin {
         _authorizeViewer(viewer);
+    }
+
+    /// @notice Pauses the survey, preventing new responses.
+    function pause() external onlyAdmin {
+        _paused = true;
+    }
+
+    /// @notice Resumes the survey, allowing new responses.
+    function unpause() external onlyAdmin {
+        _paused = false;
+    }
+
+    /// @notice Returns whether the survey is currently paused.
+    function paused() external view returns (bool) {
+        return _paused;
     }
 
     /// @notice Returns the list of currently authorized viewers.
