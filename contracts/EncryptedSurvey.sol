@@ -25,6 +25,7 @@ contract EncryptedSurvey is SepoliaConfig {
 
     event ResponseSubmitted(address indexed respondent, uint256 indexed optionIndex);
     event ViewerAuthorized(address indexed viewer);
+    event SurveyInitialized(string title, string description, uint256 optionsCount);
 
     error SurveyAlreadyAnswered();
     error InvalidOption();
@@ -51,6 +52,8 @@ contract EncryptedSurvey is SepoliaConfig {
 
         _encryptedTallies = new euint32[](options.length);
         _authorizeViewer(admin);
+
+        emit SurveyInitialized(surveyTitle, surveyDescription, _options.length);
     }
 
     /// @notice Returns the number of available options in the survey.
