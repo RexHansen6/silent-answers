@@ -23,6 +23,7 @@ contract EncryptedSurvey is SepoliaConfig {
     address public immutable admin;
     ViewerRegistry private _viewerRegistry;
     bool private _paused;
+    uint256 private _endTime;
 
     event ResponseSubmitted(address indexed respondent, uint256 indexed optionIndex);
     event ViewerAuthorized(address indexed viewer);
@@ -47,7 +48,14 @@ contract EncryptedSurvey is SepoliaConfig {
         _;
     }
 
-    constructor(string memory title, string memory description, string[] memory options) {
+    modifier whenActive() {
+        if (block.timestamp > _endTime) {
+            revert("Survey has ended");
+        }
+        _;
+    }
+
+    constructor(string memory title, string memory description, string[] memory options, uint256 surveyDuration) {
         require(options.length > 0, "OPTIONS_REQUIRED");
 
         admin = msg.sender;
@@ -60,6 +68,7 @@ contract EncryptedSurvey is SepoliaConfig {
 
         _encryptedTallies = new euint32[](options.length);
         _authorizeViewer(admin);
+        _endTime = block.timestamp + surveyDuration;
 
         emit SurveyInitialized(surveyTitle, surveyDescription, _options.length);
     }
@@ -114,7 +123,7 @@ contract EncryptedSurvey is SepoliaConfig {
     }
 
     /// @notice Submits an encrypted response for a specific survey option.
-    function submitResponse(uint256 optionIndex, externalEuint32 encryptedVote, bytes calldata proof) external whenNotPaused {
+    function submitResponse(uint256 optionIndex, externalEuint32 encryptedVote, bytes calldata proof) external whenNotPaused whenActive {
         if (optionIndex >= _options.length) {
             revert InvalidOption();
         }
@@ -151,6 +160,16 @@ contract EncryptedSurvey is SepoliaConfig {
     /// @notice Returns whether the survey is currently paused.
     function paused() external view returns (bool) {
         return _paused;
+    }
+
+    /// @notice Returns the survey end time.
+    function endTime() external view returns (uint256) {
+        return _endTime;
+    }
+
+    /// @notice Returns whether the survey is currently active.
+    function isActive() external view returns (bool) {
+        return block.timestamp <= _endTime && !_paused;
     }
 
     /// @notice Batch authorizes multiple viewers at once.
