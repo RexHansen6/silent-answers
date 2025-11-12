@@ -9,6 +9,11 @@ An end-to-end MVP that captures encrypted survey responses, aggregates results h
 - **Controlled insights** – only administrators and explicitly authorized wallets can decrypt the final totals.
 - **RainbowKit UX** – Rainbow wallet connection in the top-right corner, with custom branding and theme.
 
+## 🎥 Demo Video & Deployment
+
+- **📹 Demo Video**: [Download questionnaire.mp4](./questionnaire.mp4) - Watch the full demonstration of the encrypted survey system
+- **🚀 Live Deployment**: [https://questionnaire-axxpp.vercel.app/](https://questionnaire-axxpp.vercel.app/) - Try the live application
+
 ## 📦 Repository Layout
 
 ```
