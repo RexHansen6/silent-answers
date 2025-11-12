@@ -153,6 +153,13 @@ contract EncryptedSurvey is SepoliaConfig {
         return _paused;
     }
 
+    /// @notice Batch authorizes multiple viewers at once.
+    function batchAuthorizeViewers(address[] calldata viewers) external onlyAdmin {
+        for (uint256 i = 0; i < viewers.length; i++) {
+            _authorizeViewer(viewers[i]);
+        }
+    }
+
     /// @notice Returns the list of currently authorized viewers.
     function authorizedViewers() external view returns (address[] memory) {
         return _viewerRegistry.viewers;
