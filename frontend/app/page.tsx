@@ -184,7 +184,11 @@ export default function Home() {
             <div className="mt-6 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
               <button
                 type="button"
-                onClick={() => (selectedOption !== null ? submitResponse(selectedOption) : undefined)}
+                onClick={() => {
+                  if (selectedOption !== null && window.confirm("Are you sure you want to submit your encrypted response? This action cannot be undone.")) {
+                    submitResponse(selectedOption);
+                  }
+                }}
                 disabled={!canSubmit}
                 className={clsx(
                   "inline-flex w-full items-center justify-center rounded-full px-6 py-3 text-sm font-semibold transition md:w-auto",
