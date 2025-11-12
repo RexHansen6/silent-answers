@@ -60,6 +60,7 @@ export default function Home() {
   const [isBatchMode, setIsBatchMode] = useState<boolean>(false);
   const [viewerAddress, setViewerAddress] = useState<string>("");
   const [newDeadline, setNewDeadline] = useState<string>("");
+  const [showAdvanced, setShowAdvanced] = useState<boolean>(false);
 
   const fallbackTitle = surveyTitle || "Employee Experience Pulse 2025";
   const fallbackDescription =
@@ -401,8 +402,17 @@ export default function Home() {
                 ) : null}
                 {isAdmin && (
                   <div className="mt-4 space-y-3 border-t border-white/10 pt-4">
-                    <div className="text-xs font-semibold uppercase tracking-[0.25em] text-slate-400">
-                      Survey management
+                    <div className="flex items-center justify-between">
+                      <div className="text-xs font-semibold uppercase tracking-[0.25em] text-slate-400">
+                        Survey management
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setShowAdvanced(!showAdvanced)}
+                        className="text-xs text-slate-400 hover:text-white transition"
+                      >
+                        {showAdvanced ? 'Hide advanced' : 'Show advanced'} ▶
+                      </button>
                     </div>
                     <div className="flex flex-col gap-2">
                       {isActive ? (
@@ -422,28 +432,30 @@ export default function Home() {
                           Reopen Survey
                         </button>
                       )}
-                      <div className="flex flex-col gap-2 sm:flex-row">
-                        <input
-                          type="datetime-local"
-                          value={newDeadline}
-                          onChange={(event) => setNewDeadline(event.target.value)}
-                          className="flex-1 rounded-full border border-white/10 bg-white/10 px-4 py-2 text-sm text-white placeholder:text-slate-400 focus:border-indigo-300 focus:outline-none focus:ring-0"
-                        />
-                        <button
-                          type="button"
-                          onClick={() => {
-                            if (newDeadline) {
-                              const timestamp = Math.floor(new Date(newDeadline).getTime() / 1000);
-                              void extendDeadline(timestamp);
-                              setNewDeadline("");
-                            }
-                          }}
-                          disabled={!newDeadline}
-                          className="inline-flex items-center justify-center rounded-full px-4 py-2 text-sm font-semibold transition disabled:cursor-not-allowed disabled:bg-white/10 disabled:text-slate-400 bg-indigo-500 text-white hover:bg-indigo-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-200/80"
-                        >
-                          Extend Deadline
-                        </button>
-                      </div>
+                      {showAdvanced && (
+                        <div className="flex flex-col gap-2 sm:flex-row">
+                          <input
+                            type="datetime-local"
+                            value={newDeadline}
+                            onChange={(event) => setNewDeadline(event.target.value)}
+                            className="flex-1 rounded-full border border-white/10 bg-white/10 px-4 py-2 text-sm text-white placeholder:text-slate-400 focus:border-indigo-300 focus:outline-none focus:ring-0"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => {
+                              if (newDeadline) {
+                                const timestamp = Math.floor(new Date(newDeadline).getTime() / 1000);
+                                void extendDeadline(timestamp);
+                                setNewDeadline("");
+                              }
+                            }}
+                            disabled={!newDeadline}
+                            className="inline-flex items-center justify-center rounded-full px-4 py-2 text-sm font-semibold transition disabled:cursor-not-allowed disabled:bg-white/10 disabled:text-slate-400 bg-indigo-500 text-white hover:bg-indigo-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-200/80"
+                          >
+                            Extend Deadline
+                          </button>
+                        </div>
+                      )}
                     </div>
                   </div>
                 )}
