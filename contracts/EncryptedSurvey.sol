@@ -56,6 +56,11 @@ contract EncryptedSurvey is SepoliaConfig {
         _;
     }
 
+    modifier validOption(uint256 optionIndex) {
+        require(optionIndex < _options.length, "INVALID_OPTION_INDEX");
+        _;
+    }
+
     constructor(string memory title, string memory description, string[] memory options, uint256 deadline) {
         require(options.length > 0, "OPTIONS_REQUIRED");
 
@@ -79,11 +84,7 @@ contract EncryptedSurvey is SepoliaConfig {
     }
 
     /// @notice Returns the label for a specific survey option.
-    function getOptionLabel(uint256 optionIndex) external view returns (string memory) {
-        if (optionIndex >= _options.length) {
-            revert InvalidOption();
-        }
-
+    function getOptionLabel(uint256 optionIndex) external view validOption(optionIndex) returns (string memory) {
         return _options[optionIndex];
     }
 
@@ -93,11 +94,7 @@ contract EncryptedSurvey is SepoliaConfig {
     }
 
     /// @notice Retrieves the encrypted tally for the provided option index.
-    function getEncryptedTally(uint256 optionIndex) external view returns (euint32) {
-        if (optionIndex >= _options.length) {
-            revert InvalidOption();
-        }
-
+    function getEncryptedTally(uint256 optionIndex) external view validOption(optionIndex) returns (euint32) {
         return _encryptedTallies[optionIndex];
     }
 
