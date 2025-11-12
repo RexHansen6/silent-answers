@@ -342,7 +342,7 @@ export default function Home() {
                   <div className="flex justify-between">
                     <span className="text-slate-400">Participation</span>
                     <span className="font-medium text-white">
-                      {Number(surveyStats.participantCount) * 10} responses {/* Bug: Multiply by 10 */}
+                      {Number(surveyStats.participantCount)} responses
                     </span>
                   </div>
                 )}
