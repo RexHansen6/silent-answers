@@ -96,6 +96,11 @@ contract EncryptedSurvey is SepoliaConfig {
         return _hasResponded[account];
     }
 
+    /// @notice Gets the total number of survey options (gas-optimized view)
+    function getOptionCount() external view returns (uint256) {
+        return _options.length;
+    }
+
     /// @notice Retrieves the encrypted tally for the provided option index.
     function getEncryptedTally(uint256 optionIndex) external view validOption(optionIndex) returns (euint32) {
         return _encryptedTallies[optionIndex];
