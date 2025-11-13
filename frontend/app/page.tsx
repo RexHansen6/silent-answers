@@ -45,6 +45,7 @@ export default function Home() {
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const [viewerAddress, setViewerAddress] = useState<string>("");
   const [surveyEndTime, setSurveyEndTime] = useState<number | null>(null);
+  const [responseRate, setResponseRate] = useState<number>(0);
 
   const fallbackTitle = surveyTitle || "Employee Experience Pulse 2025";
   const fallbackDescription =
@@ -255,6 +256,12 @@ export default function Home() {
                     </span>
                   </div>
                 )}
+                <div className="flex justify-between">
+                  <span className="text-slate-400">Response rate</span>
+                  <span className="font-medium text-white">
+                    {responseRate}%
+                  </span>
+                </div>
               </div>
               <div className="mt-5 flex flex-col gap-3">
                 <button
