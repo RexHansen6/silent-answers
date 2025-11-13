@@ -257,7 +257,14 @@ export default function Home() {
               </p>
             </div>
             {message && (
-              <div className="mt-4 rounded-2xl border border-white/10 bg-white/5 px-5 py-3 text-sm text-slate-200">
+              <div className={clsx(
+                "mt-4 rounded-2xl border px-5 py-3 text-sm",
+                message.toLowerCase().includes("error") || message.toLowerCase().includes("failed")
+                  ? "border-red-400/50 bg-red-500/10 text-red-200"
+                  : message.toLowerCase().includes("success")
+                  ? "border-emerald-400/50 bg-emerald-500/10 text-emerald-200"
+                  : "border-white/10 bg-white/5 text-slate-200"
+              )}>
                 {message}
               </div>
             )}
