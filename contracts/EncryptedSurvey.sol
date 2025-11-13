@@ -105,6 +105,13 @@ contract EncryptedSurvey is SepoliaConfig {
         return total;
     }
 
+    /// @notice Returns the response rate as a percentage (0-100).
+    function getResponseRate() external view returns (uint256) {
+        if (_options.length == 0) return 0;
+        uint256 responses = getTotalResponses();
+        return (responses * 100) / _options.length;
+    }
+
     /// @notice Retrieves the encrypted tally for the provided option index.
     function getEncryptedTally(uint256 optionIndex) external view returns (euint32) {
         if (optionIndex >= _options.length) {
