@@ -7,6 +7,9 @@ import "encrypted-types/EncryptedTypes.sol";
 
 /// @title Encrypted Survey System
 /// @notice Collects encrypted survey responses and maintains encrypted tallies per option.
+/// @dev Uses FHE (Fully Homomorphic Encryption) to ensure privacy-preserving voting.
+/// All vote tallies remain encrypted until authorized viewers decrypt them.
+/// Supports both single and batch response submissions for enhanced user experience.
 contract EncryptedSurvey is SepoliaConfig {
     /// @notice Describes a viewer that is authorized to decrypt survey tallies.
     struct ViewerRegistry {
