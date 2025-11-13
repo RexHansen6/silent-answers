@@ -44,6 +44,7 @@ export default function Home() {
 
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const [viewerAddress, setViewerAddress] = useState<string>("");
+  const [surveyEndTime, setSurveyEndTime] = useState<number | null>(null);
 
   const fallbackTitle = surveyTitle || "Employee Experience Pulse 2025";
   const fallbackDescription =
@@ -246,6 +247,14 @@ export default function Home() {
                     {isFetching ? "Refreshing…" : `${encryptedTallies.length || cardOptions.length} options`}
                   </span>
                 </div>
+                {surveyEndTime && (
+                  <div className="flex justify-between">
+                    <span className="text-slate-400">Time remaining</span>
+                    <span className="font-medium text-white">
+                      {Math.max(0, Math.floor((surveyEndTime - Date.now() / 1000) / 3600))}h remaining
+                    </span>
+                  </div>
+                )}
               </div>
               <div className="mt-5 flex flex-col gap-3">
                 <button
