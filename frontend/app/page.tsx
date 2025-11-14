@@ -75,6 +75,11 @@ export default function Home() {
     [options],
   );
 
+  const fallbackOptions = useMemo(
+    () => ["Celebrate what is working well", "Highlight supportive leadership behaviours", "Spot neutral sentiment to improve", "Surface blockers and concerns"],
+    [],
+  );
+
   const canSubmit =
     ((selectedOption !== null && !isBatchMode) || (selectedOptions.size > 0 && isBatchMode)) &&
     !isSubmitting &&
@@ -206,11 +211,7 @@ export default function Home() {
                     <div className="flex flex-col">
                       <span className="text-base font-medium text-white">{optionLabel}</span>
                       <span className="text-sm text-slate-300/80">
-                        {index === 0 && "Celebrate what is working well"}
-                        {index === 1 && "Highlight supportive leadership behaviours"}
-                        {index === 2 && "Spot neutral sentiment to improve"}
-                        {index === 3 && "Surface blockers and concerns"}
-                        {index > 3 && "Share how this experience feels today"}
+                        {fallbackOptions[index] || "Share how this experience feels today"}
                       </span>
                     </div>
                     <input
