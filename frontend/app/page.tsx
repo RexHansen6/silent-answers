@@ -325,7 +325,14 @@ export default function Home() {
                 <div className="flex justify-between">
                   <span className="text-slate-400">Survey progress</span>
                   <span className="font-medium text-white">
-                    {isFetching ? "Refreshing…" : `${encryptedTallies.length || cardOptions.length} options`}
+                    {isFetching ? (
+                      <span className="flex items-center gap-2">
+                        <div className="w-3 h-3 border border-white/30 border-t-white rounded-full animate-spin"></div>
+                        Refreshing…
+                      </span>
+                    ) : (
+                      `${encryptedTallies.length || cardOptions.length} options`
+                    )}
                   </span>
                 </div>
                 <div className="flex justify-between">
