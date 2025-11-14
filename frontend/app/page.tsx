@@ -209,7 +209,12 @@ export default function Home() {
                     : "cursor-not-allowed bg-white/10 text-slate-400",
                 )}
               >
-                {isSubmitting ? "Encrypting & submitting…" : hasResponded ? "Response captured" : "Submit encrypted vote"}
+                {isSubmitting ? (
+                  <>
+                    <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white"></div>
+                    Encrypting & submitting…
+                  </>
+                ) : hasResponded ? "Response captured" : "Submit encrypted vote"}
               </button>
               <p className="text-xs text-slate-400">
                 Ciphertexts refresh automatically. Admins can decrypt final tallies with the button on the right.
