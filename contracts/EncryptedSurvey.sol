@@ -344,6 +344,7 @@ contract EncryptedSurvey is SepoliaConfig {
     /// @notice Allows users to withdraw their vote and resubmit (resets their voting status).
     function withdrawAndResubmit() external surveyActive {
         require(_hasResponded[msg.sender], "NO_PREVIOUS_VOTE");
+        require(block.timestamp <= surveyDeadline - 1 hours, "TOO_LATE_TO_WITHDRAW"); // Prevent last-minute withdrawals
 
         // Note: In a real FHE system, properly withdrawing votes would require homomorphic subtraction
         // This is a simplified version that just resets the user's voting status
