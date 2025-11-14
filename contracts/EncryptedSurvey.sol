@@ -29,6 +29,8 @@ contract EncryptedSurvey is SepoliaConfig {
     event ResponseSubmitted(address indexed respondent, uint256 indexed optionIndex);
     event ViewerAuthorized(address indexed viewer);
     event SurveyInitialized(string title, string description, uint256 optionsCount);
+    event SurveyPaused(address indexed admin);
+    event SurveyResumed(address indexed admin);
 
     error SurveyAlreadyAnswered();
     error InvalidOption();
@@ -166,11 +168,13 @@ contract EncryptedSurvey is SepoliaConfig {
     /// @notice Pauses the survey, preventing new responses.
     function pause() external onlyAdmin {
         _paused = true;
+        emit SurveyPaused(msg.sender);
     }
 
     /// @notice Resumes the survey, allowing new responses.
     function unpause() external onlyAdmin {
         _paused = false;
+        emit SurveyResumed(msg.sender);
     }
 
     /// @notice Returns whether the survey is currently paused.
