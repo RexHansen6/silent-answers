@@ -69,6 +69,12 @@ export default function Home() {
   const isAdmin =
     address && adminAddress ? address.toLowerCase() === adminAddress.toLowerCase() : false;
 
+  // Error boundary for survey operations
+  const handleSurveyError = (error: unknown) => {
+    console.error("Survey error:", error);
+    // In a real app, this would trigger error reporting
+  };
+
   return (
     <main className="flex flex-1 flex-col">
       <header className="mx-auto flex w-full max-w-6xl items-center justify-between px-6 pt-12">
@@ -187,8 +193,12 @@ export default function Home() {
               <button
                 type="button"
                 onClick={() => {
-                  if (selectedOption !== null && window.confirm("Are you sure you want to submit your encrypted response? This action cannot be undone.")) {
-                    submitResponse(selectedOption);
+                  try {
+                    if (selectedOption !== null && window.confirm("Are you sure you want to submit your encrypted response? This action cannot be undone.")) {
+                      submitResponse(selectedOption);
+                    }
+                  } catch (error) {
+                    handleSurveyError(error);
                   }
                 }}
                 disabled={!canSubmit}
