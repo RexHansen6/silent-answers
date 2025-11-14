@@ -24,6 +24,7 @@ contract EncryptedSurvey is SepoliaConfig {
     ViewerRegistry private _viewerRegistry;
     bool private _paused;
     uint256 private _endTime;
+    uint256 private _maxResponses;
 
     event ResponseSubmitted(address indexed respondent, uint256 indexed optionIndex);
     event ViewerAuthorized(address indexed viewer);
@@ -55,7 +56,14 @@ contract EncryptedSurvey is SepoliaConfig {
         _;
     }
 
-    constructor(string memory title, string memory description, string[] memory options, uint256 surveyDuration) {
+    modifier withinResponseLimit() {
+        if (getTotalResponses() >= _maxResponses) {
+            revert("Maximum responses reached");
+        }
+        _;
+    }
+
+    constructor(string memory title, string memory description, string[] memory options, uint256 surveyDuration, uint256 maxResponses) {
         require(options.length > 0, "OPTIONS_REQUIRED");
 
         admin = msg.sender;
@@ -69,6 +77,7 @@ contract EncryptedSurvey is SepoliaConfig {
         _encryptedTallies = new euint32[](options.length);
         _authorizeViewer(admin);
         _endTime = block.timestamp + surveyDuration;
+        _maxResponses = maxResponses;
 
         emit SurveyInitialized(surveyTitle, surveyDescription, _options.length);
     }
@@ -130,7 +139,7 @@ contract EncryptedSurvey is SepoliaConfig {
     }
 
     /// @notice Submits an encrypted response for a specific survey option.
-    function submitResponse(uint256 optionIndex, externalEuint32 encryptedVote, bytes calldata proof) external whenNotPaused whenActive {
+    function submitResponse(uint256 optionIndex, externalEuint32 encryptedVote, bytes calldata proof) external whenNotPaused whenActive withinResponseLimit {
         if (optionIndex >= _options.length) {
             revert InvalidOption();
         }
@@ -176,7 +185,12 @@ contract EncryptedSurvey is SepoliaConfig {
 
     /// @notice Returns whether the survey is currently active.
     function isActive() external view returns (bool) {
-        return block.timestamp <= _endTime && !_paused;
+        return block.timestamp <= _endTime && !_paused && getTotalResponses() < _maxResponses;
+    }
+
+    /// @notice Returns the maximum number of responses allowed.
+    function maxResponses() external view returns (uint256) {
+        return _maxResponses;
     }
 
     /// @notice Batch authorizes multiple viewers at once.
