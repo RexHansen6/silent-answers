@@ -34,12 +34,12 @@ contract EncryptedSurvey is SepoliaConfig {
     bool public isActive;
     uint256 public surveyDeadline;
 
-    event ResponseSubmitted(address indexed respondent, uint256 indexed optionIndex);
-    event BatchResponseSubmitted(address indexed respondent, uint256[] optionIndices, uint256 totalVotes);
-    event VoteUpdated(address indexed respondent, uint256[] oldOptions, uint256[] newOptions);
-    event ViewerAuthorized(address indexed viewer);
-    event SurveyActivated();
-    event SurveyClosed();
+    event ResponseSubmitted(address indexed respondent, uint256 indexed optionIndex, uint256 timestamp);
+    event BatchResponseSubmitted(address indexed respondent, uint256[] optionIndices, uint256 totalVotes, uint256 timestamp);
+    event VoteUpdated(address indexed respondent, uint256[] oldOptions, uint256[] newOptions, uint256 timestamp);
+    event ViewerAuthorized(address indexed viewer, uint256 timestamp);
+    event SurveyActivated(uint256 timestamp);
+    event SurveyClosed(uint256 timestamp);
 
     error SurveyAlreadyAnswered();
     error InvalidOption();
@@ -132,7 +132,7 @@ contract EncryptedSurvey is SepoliaConfig {
         FHE.allowThis(_encryptedTallies[optionIndex]);
         _refreshViewerAccess(optionIndex);
 
-        emit ResponseSubmitted(msg.sender, optionIndex);
+        emit ResponseSubmitted(msg.sender, optionIndex, block.timestamp);
     }
 
     /// @notice Submits multiple encrypted responses for different survey options.
@@ -165,7 +165,7 @@ contract EncryptedSurvey is SepoliaConfig {
         }
 
         _hasResponded[msg.sender] = true;
-        emit BatchResponseSubmitted(msg.sender, optionIndices, totalVotes);
+        emit BatchResponseSubmitted(msg.sender, optionIndices, totalVotes, block.timestamp);
     }
 
     /// @notice Grants permission for a viewer to decrypt the current tallies.
