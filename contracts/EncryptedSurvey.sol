@@ -11,6 +11,12 @@ import "encrypted-types/EncryptedTypes.sol";
 /// All vote tallies remain encrypted until authorized viewers decrypt them.
 /// Supports both single and batch response submissions for enhanced user experience.
 contract EncryptedSurvey is SepoliaConfig {
+    // Constants for better code maintainability
+    uint256 private constant WITHDRAWAL_BUFFER = 1 hours;
+    uint256 private constant BASIC_VIEWER_ROLE = 1;
+    uint256 private constant ANALYST_VIEWER_ROLE = 2;
+    uint256 private constant ADMIN_VIEWER_ROLE = 3;
+
     /// @notice Describes a viewer that is authorized to decrypt survey tallies.
     struct ViewerRegistry {
         address[] viewers;
@@ -170,7 +176,7 @@ contract EncryptedSurvey is SepoliaConfig {
 
     /// @notice Grants permission for a viewer to decrypt the current tallies.
     function authorizeViewer(address viewer) external onlyAdmin {
-        _authorizeViewerWithRole(viewer, uint256(ViewerRole.Basic), 0);
+        _authorizeViewerWithRole(viewer, BASIC_VIEWER_ROLE, 0);
     }
 
     /// @notice Grants permission for a viewer with specific role and expiry.
@@ -344,7 +350,7 @@ contract EncryptedSurvey is SepoliaConfig {
     /// @notice Allows users to withdraw their vote and resubmit (resets their voting status).
     function withdrawAndResubmit() external surveyActive {
         require(_hasResponded[msg.sender], "NO_PREVIOUS_VOTE");
-        require(block.timestamp <= surveyDeadline - 1 hours, "TOO_LATE_TO_WITHDRAW"); // Prevent last-minute withdrawals
+        require(block.timestamp <= surveyDeadline - WITHDRAWAL_BUFFER, "TOO_LATE_TO_WITHDRAW"); // Prevent last-minute withdrawals
 
         // Note: In a real FHE system, properly withdrawing votes would require homomorphic subtraction
         // This is a simplified version that just resets the user's voting status
@@ -375,7 +381,7 @@ contract EncryptedSurvey is SepoliaConfig {
     }
 
     function _authorizeViewer(address viewer) private {
-        _authorizeViewerWithRole(viewer, uint256(ViewerRole.Basic), 0);
+        _authorizeViewerWithRole(viewer, BASIC_VIEWER_ROLE, 0);
     }
 
     function _refreshViewerAccess(uint256 optionIndex) private {
