@@ -198,6 +198,13 @@ export default function Home() {
                   }
                 };
 
+                const handleKeyDown = (event: React.KeyboardEvent) => {
+                  if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    handleToggle();
+                  }
+                };
+
                 return (
                   <label
                     key={optionLabel}
@@ -207,6 +214,8 @@ export default function Home() {
                       isSelected && "border-indigo-400/80 bg-indigo-400/15",
                       disabled && "cursor-not-allowed opacity-70",
                     )}
+                    onKeyDown={handleKeyDown}
+                    tabIndex={disabled ? -1 : 0}
                   >
                     <div className="flex flex-col">
                       <span className="text-base font-medium text-white">{optionLabel}</span>
