@@ -159,6 +159,7 @@ export default function Home() {
                 Select the option that best reflects your current sentiment. Your answer is never visible in plaintext to
                 the contract or operator—only the final aggregate can be decrypted by authorized viewers.
                 {!isActive && <span className="text-amber-300"> Survey is currently closed.</span>}
+                {hasResponded && <span className="text-emerald-300"> ✓ Your response has been recorded.</span>}
               </p>
             </header>
             <div className="mt-4 flex items-center justify-between">
